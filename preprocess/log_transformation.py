@@ -17,14 +17,17 @@ def right_skewed_data(df):
     print(df_transformed.skew())
 
     print("\nDistributions of each right-skewed column  before and after log transformation")
-    fig, axes = plt.subplots(len(highly_skewed_columns), 2, figsize=(20, 40))
+    num_cols = len(df_transformed[highly_skewed_columns].columns)
+    fig, axs = plt.subplots(nrows=num_cols, ncols=2, figsize=(20, 40))
+    fig.subplots_adjust(hspace=0.4)
 
-    for i, col in enumerate(highly_skewed_columns):
-        sns.histplot(df[col], bins=30, kde=True, ax=axes[i, 0])
-        axes[i, 0].set_title(f'Original {col} Distribution')
-        sns.histplot(df_transformed[col], bins=30, kde=True, ax=axes[i, 1])
-        axes[i, 1].set_title(f'Log Transformed {col} Distribution')
-
+    for i, col in enumerate(df_transformed[highly_skewed_columns].columns):
+    
+        sns.histplot(data=df, x=col, ax=axs[i, 0], bins=20, color='blue', alpha=0.5)
+        axs[i, 0].set_title(f'Original {col} Distribution')
+    
+        sns.histplot(data=df_transformed, x=col, ax=axs[i, 1], bins=20, color='green', alpha=0.5)
+        axs[i, 1].set_title(f'Log Transformed {col} Distribution')
     plt.tight_layout()
     plt.show()
 
